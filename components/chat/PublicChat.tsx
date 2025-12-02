@@ -7,7 +7,7 @@ import { CloseIcon, SendIcon, OptionsIcon, PinIcon, CheckIcon, TrashIcon, Chevro
 import MessageOptionsMenu from '../modals/MessageOptionsMenu.tsx';
 import DeleteMessageModal from '../modals/DeleteMessageModal.tsx';
 import UserProfileModal from '../modals/UserProfileModal.tsx';
-import { REACTION_EMOJIS } from '../../constants.tsx';
+import { REACTION_EMOJIS, ADMIN_UIDS } from '../../constants.tsx';
 import AvatarPickerModal from '../ui/AvatarPickerModal.tsx';
 
 // Reusable Reaction List Component
@@ -389,6 +389,7 @@ const PublicChat: React.FC<PublicChatProps> = ({ user, currentUserProfile, block
                     if (profile?.isMuted && !isDeveloper) return null;
 
                     const isMyMessage = msg.uid === user.uid;
+                    const isMessageDeveloper = ADMIN_UIDS.includes(msg.uid);
 
                     const prevMessage = index > 0 ? messages[index - 1] : null;
                     const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
@@ -459,9 +460,10 @@ const PublicChat: React.FC<PublicChatProps> = ({ user, currentUserProfile, block
                             </div>
                             <div className={`flex flex-col max-w-xs ${isMyMessage ? 'items-end' : 'items-start'}`}>
                                 {isStartOfGroup && !isMyMessage && (
-                                    <div className="flex items-center gap-2 mb-1 ml-2">
+                                    <div className="flex items-center gap-2 mb-1 ml-2 flex-wrap">
                                         <p className="text-sm font-semibold text-sky-300 cursor-pointer" onClick={() => handleOpenUserProfile(msg)}>{displayName}</p>
-                                        {profile?.role === 'supervisor' && <span className="text-xs font-bold text-yellow-400 bg-yellow-900/50 px-2 py-0.5 rounded-full">مشرف</span>}
+                                        {isMessageDeveloper && <span className="text-xs font-bold text-white bg-blue-600 px-2 py-0.5 rounded-full shadow-sm">مطور التطبيق</span>}
+                                        {profile?.role === 'supervisor' && !isMessageDeveloper && <span className="text-xs font-bold text-yellow-400 bg-yellow-900/50 px-2 py-0.5 rounded-full">مشرف</span>}
                                         {profile?.isMuted && <span className="text-xs font-bold text-red-400 bg-red-900/50 px-2 py-0.5 rounded-full">مكتوم</span>}
                                     </div>
                                 )}

@@ -16,6 +16,7 @@ import ProgressBar from './ui/ProgressBar.tsx';
 import FreedomModelProgram from './home/FreedomModelProgram.tsx'; // Import the new component
 import RecoveryCompanionModal from './modals/RecoveryCompanionModal.tsx';
 import DoctorTaafiModal from './modals/DoctorTaafiModal.tsx';
+import RecoveryTipButton from './home/RecoveryTipButton.tsx'; // Import the new Tip Button
 
 const quotes = [
     {
@@ -317,6 +318,7 @@ const Home: React.FC<HomeProps> = ({
                 {doctorTaafiButton}
                 {recoveryCompanionButton}
                 {recoveryVideosButton}
+                <RecoveryTipButton />
                 <IntenseUrgeButton user={user} userProfile={userProfile} />
                 <EmergencyButton user={user} userProfile={userProfile} />
                 <CommitmentDocument user={user} userProfile={userProfile} />
@@ -386,6 +388,7 @@ const Home: React.FC<HomeProps> = ({
                     {doctorTaafiButton}
                     {recoveryCompanionButton}
                     {recoveryVideosButton}
+                    <RecoveryTipButton />
                     <IntenseUrgeButton user={user} userProfile={userProfile} />
                     <EmergencyButton user={user} userProfile={userProfile} />
                     <CommitmentDocument user={user} userProfile={userProfile} />

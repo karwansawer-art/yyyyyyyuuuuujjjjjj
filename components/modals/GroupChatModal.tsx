@@ -432,6 +432,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ isOpen, onClose, user, 
             <div className="flex-grow p-4 flex flex-col overflow-y-auto">
                  {messages.map((msg, index) => {
                     const isMyMessage = msg.uid === user.uid;
+                    const isMessageDeveloper = ADMIN_UIDS.includes(msg.uid);
 
                     const prevMessage = index > 0 ? messages[index - 1] : null;
                     const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
@@ -477,7 +478,13 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ isOpen, onClose, user, 
                                 )}
                             </div>
                             <div className={`flex flex-col max-w-xs ${isMyMessage ? 'items-end' : 'items-start'}`}>
-                                {isStartOfGroup && !isMyMessage && <p className="text-sm font-semibold text-sky-300 mb-1 ml-2">{displayName}</p>}
+                                {isStartOfGroup && !isMyMessage && (
+                                    <div className="flex items-center gap-2 mb-1 ml-2 flex-wrap">
+                                        <p className="text-sm font-semibold text-sky-300">{displayName}</p>
+                                        {isMessageDeveloper && <span className="text-xs font-bold text-white bg-blue-600 px-2 py-0.5 rounded-full shadow-sm">مطور التطبيق</span>}
+                                        {profile?.role === 'supervisor' && !isMessageDeveloper && <span className="text-xs font-bold text-yellow-400 bg-yellow-900/50 px-2 py-0.5 rounded-full">مشرف</span>}
+                                    </div>
+                                )}
                                 <div className={bubbleClasses}>
                                     {msg.replyTo && (
                                         <a href={`#msg-${msg.replyTo.id}`} onClick={(e) => { e.preventDefault(); handleScrollToMessage(msg.replyTo.id); }} className="block p-2 mb-2 border-r-2 border-sky-400 bg-black/20 rounded text-sm text-sky-300 hover:bg-black/30 transition-colors">
