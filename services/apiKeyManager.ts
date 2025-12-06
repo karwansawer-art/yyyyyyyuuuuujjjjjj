@@ -1,5 +1,4 @@
 
-
 // =======================================================
 // --- سیستمی زیرەکی دەستکردی التعافي (RecoveryAI) ---
 // --- إدارة المفاتيح والاتصال المركزي ---
@@ -73,7 +72,10 @@ class ApiKeyManager {
 
 const apiKeyManager = new ApiKeyManager(API_KEYS);
 
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent';
+// Use a CORS proxy to bypass browser restrictions
+const PROXY_URL = "https://corsproxy.io/?";
+// Use the stable model for better reliability
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 export async function callGeminiAPI(
     systemInstruction: string,
@@ -82,7 +84,8 @@ export async function callGeminiAPI(
 ): Promise<string> {
     if (retries <= 0) { throw new Error("فشل الاتصال بـ API بعد استنفاد جميع المفاتيح."); }
     const apiKey = apiKeyManager.getKey();
-    const apiUrl = `${GEMINI_API_URL}?key=${apiKey}`;
+    // Prepend the proxy URL to the API endpoint
+    const apiUrl = `${PROXY_URL}${GEMINI_API_URL}?key=${apiKey}`;
     
     const payload = {
         ...(systemInstruction && { systemInstruction: { parts: [{ text: systemInstruction }] } }),
